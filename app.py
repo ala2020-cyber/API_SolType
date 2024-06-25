@@ -6,10 +6,14 @@ from tensorflow.keras.preprocessing import image
 from pymongo import MongoClient
 from datetime import datetime
 import gdown
-import pickle
-import time
+from dotenv import load_dotenv
 
 app = Flask(__name__)
+
+
+# Charger les variables d'environnement à partir du fichier .env
+load_dotenv()
+
 
 UPLOAD_FOLDER = "uploads"
 if not os.path.exists(UPLOAD_FOLDER):
@@ -29,7 +33,8 @@ if not os.path.exists(output):
 model = load_model(output)  # Charger le modèle à partir du fichier .h5
 
 # Connect to MongoDB
-client = MongoClient('mongodb+srv://user:user@cluster0.k8dtyrj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')  # Change the URI according to your MongoDB configuration
+MongoURI=os.getenv('MONGO_URI')
+client = MongoClient(MongoURI)
 db = client['SysArrosage']
 collection = db['predictions']
 
