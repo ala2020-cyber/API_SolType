@@ -7,6 +7,7 @@ from pymongo import MongoClient
 from datetime import datetime
 import gdown
 import pickle
+import time
 
 app = Flask(__name__)
 
@@ -15,19 +16,17 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 
-
-url_model="https://drive.google.com/file/d/1jtvL6rC0ogPw4FgcnXVYGnuHAviy4IeP/view?usp=sharing"
+file_id = '1jtvL6rC0ogPw4FgcnXVYGnuHAviy4IeP'
+url = f'https://drive.google.com/uc?id={file_id}'
 output= 'soil_recognition_model.h5'
 
 if not os.path.exists(output):
     print("téléchargement du modèle depuis Google Drive ...")
-    gdown.download(url_model,output,quiet=False)
+    gdown.download(url,output,quiet=False)
     print("Téléchargement terminé.")
 
 # charger le modèle
-with open(output,'rb') as f:
-    model=pickle.load(f)
-
+model = load_model(output)  # Charger le modèle à partir du fichier .h5
 
 # Connect to MongoDB
 client = MongoClient('mongodb+srv://user:user@cluster0.k8dtyrj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')  # Change the URI according to your MongoDB configuration
