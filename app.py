@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 import os
 import numpy as np
-from tensorflow.keras.preprocessing import image
 from pymongo import MongoClient
 from datetime import datetime
 import gdown
